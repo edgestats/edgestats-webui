@@ -1,0 +1,143 @@
+{% extends 'layout.html' %}
+
+{% block title %}Stats{% endblock %}
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+<article class="stats-grid">
+
+  <section class="update-stats">
+    <div id="update">
+      Last updated: {{ refreshed_at }}
+    </div>
+  </section>
+
+  <section class="recent-stats">
+    <div id="recent">
+      <div class="key">Recent Stats</div>
+      <table class="stats tbl">
+        <thead>
+          <tr>
+            <th class="addr">Address</th>
+            <th class="nsts">Status</th>
+            <th class="nprs">Peers</th>
+            <th class="updt">Date / Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stat in statistics[:1] %}
+          <tr>
+            <td class="addr">
+              <a href="#">{{ stat['address'] }}</a>
+            </td>
+            {% if stat['ok_status'] == 0 %}
+            <td class="nsts status0"></td>
+            {% elif stat['ok_status'] == 1 %}
+            <td class="nsts status1"></td>
+            {% elif stat['ok_status'] == 2 %}
+            <td class="nsts status2"></td>
+            {% endif %}
+            <td class="nprs">{{ stat['num_peers'] }}</td>
+            <td class="updt">{{ stat['created_at'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="uptime-stats">
+    <div id="uptime">
+      <div class="key">Uptime Stats</div>
+      <table class="stats agg">
+        <thead>
+          <tr>
+            <th class="lbl"></th>
+            <th class="hr24">24 hr</th>
+            <th class="day7">7 day</th>
+            <th class="day30">30 day</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">Uptime</td>
+            <td class="hr24">{{ aggregates['uptime']['24hr'] }}%</td>
+            <td class="day7">{{ aggregates['uptime']['7day'] }}%</td>
+            <td class="day30">{{ aggregates['uptime']['30day'] }}%</td>
+          </tr>
+          <tr>
+            <td class="lbl">Blocks</td>
+            <td class="hr24">{{ aggregates['blocks']['24hr'] }}</td>
+            <td class="day7">{{ aggregates['blocks']['7day'] }}</td>
+            <td class="day30">{{ aggregates['blocks']['30day'] }}</td>
+          </tr>
+          <tr>
+            <td class="lbl">Misses</td>
+            <td class="hr24">{{ aggregates['misses']['24hr'] }}</td>
+            <td class="day7">{{ aggregates['misses']['7day'] }}</td>
+            <td class="day30">{{ aggregates['misses']['30day'] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="stakes-stats">
+    <div id="stakes">
+      <div class="key">TFuel Stakes</div>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th class="addr">Address</th>
+            <th class="fstk">Stake</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, val in stakes.items() %}
+          {% if val != 0 %}
+          <tr>
+            <td><a href="https://explorer.thetatoken.org/account/{{key}}" target="_blank">{{ key }}</a></td>
+            <td>{{ val }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {% if aggregates['misses']['30day'] != 0 %}
+  <section class="misses-stats">
+    <div class="key">Missed Blocks</div>
+    <div id="tgl" class="tgl" onclick="toggleMisses()">Show?</div>
+    <div id="misses" style="display: none;">
+      <table class="misses">
+        <thead>
+          <tr>
+            <th class="bkhgt">Height</th>
+            <th class="bkhsh">Block Hash</th>
+            <th class="dtime">Date / Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for miss in aggregates['misses']['list'] %}
+          <tr>
+            <td class="bkhgt">{{ miss['height']}}</td>
+            <td class="bkhsh">{{ miss['block'] }}</td>
+            <td class="dtime">{{ miss['created_at']}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endif %}
+
+</article>
+
+<script type="text/javascript" src="{{ url_for('static', filename='refresh.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='misses.js') }}"></script>
+
+{% endblock %}

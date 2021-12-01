@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block title %}Clusters View{% endblock %}
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+<article class="stats-grid">
+
+  <section class="update-stats">
+    <div id="update">
+      Last updated: {{ refreshed_at }}
+    </div>
+  </section>
+
+  <section class="recent-stats">
+    <div id="recent">
+      <div class="key">Recent Stats</div>
+      <table class="stats tbl">
+        <thead>
+          <tr>
+            <th class="addr">Address</th>
+            <th class="nsts">Status</th>
+            <th class="nprs">Peers</th>
+            <th class="updt">Date / Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stat in statistics %}
+          <tr>
+            <td class="addr">
+              <a href="{{ url_for('stats', address=stat['address']) }}">{{ stat['address'] }}</a>
+            </td>
+            {% if stat['ok_status'] == 0 %}
+            <td class="nsts status0"></td>
+            {% elif stat['ok_status'] == 1 %}
+            <td class="nsts status1"></td>
+            {% elif stat['ok_status'] == 2 %}
+            <td class="nsts status2"></td>
+            {% endif %}
+            <td class="nprs">{{ stat['num_peers'] }}</td>
+            <td class="updt">{{ stat['created_at'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</article>
+
+<script type="text/javascript" src="{{ url_for('static', filename='refresh.js') }}"></script>
+
+{% endblock %}

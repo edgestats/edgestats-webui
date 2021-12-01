@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block title %}Error{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+
+<article class="error-grid">
+
+  <section class="error-info">
+    {% if error.code == 403 %}
+    <div class="misc-desc">ERROR {{ error.code }}: {{ error.name }}!</div>
+    <div class="misc-link">
+      <a href="{{ url_for('index') }}">Home</a>
+    </div>
+    <br>
+    <br>
+    {% elif error.code == 404 %}
+    <div class="misc-desc">ERROR {{ error.code }}: {{ error.name }}!</div>
+    <div class="misc-link">
+      <a href="{{ url_for('index') }}">Home</a>
+    </div>
+    <br>
+    <br>
+    {% elif error.code == 500 %}
+    <div class="misc-desc">ERROR {{ error.code }}: {{ error.name }}!</div>
+    <div class="misc-link">
+      <a href="{{ request.index }}">Back</a>
+    </div>
+    <br>
+    <br>
+    {% else %}
+    <div class="misc-desc">ERROR {{ error.code }}: {{ error.name }}!</div>
+    <div class="misc-link">
+      <a href="{{ url_for('index') }}">Home</a>
+    </div>
+
+    {% endif %}
+  </section>
+
+</article>
+
+{% endblock %}

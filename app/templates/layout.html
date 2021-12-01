@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EdgeStats">
+  <meta name="theme-color" content="#0c0f1a">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='esio-cube.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <link rel="canonical" href="{{ url_for('index') }}">
+
+  <title>{% block title %}{% endblock %}</title>
+  {% endblock %}
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <nav>
+      <div class="nav-flex">
+        <div class="nav-logo">
+          <a href="/">
+            <img src="{{ url_for('static', filename='esio-logo.png') }}" alt="logo">
+          </a>
+        </div>
+        <div class="nav-links">
+          <div class="link-area">
+            <a href="{{ url_for('clusters') }}">
+              <div class="link-text">Clusters</div>
+            </a>
+          </div>
+          <div class="link-area">
+            <a href="{{ url_for('nfts') }}">
+              <div class="link-text">NFTs</div>
+            </a>
+          </div>
+          <div class="link-area">
+            <a href="{{ url_for('faqs') }}">
+              <div class="link-text">FAQs</div>
+            </a>
+          </div>
+          <div class="link-area">
+            <a href="{{ url_for('downloads') }}">
+              <div class="link-text">Downloads</div>
+            </a>
+          </div>
+        </div>
+        <div class="burger">
+          <div class="line1"></div>
+          <div class="line2"></div>
+          <div class="line3"></div>
+        </div>
+      </div>
+
+      <div class="nav-mobile">
+        <div class="mobile-links">
+          <div class="sub-nav"><a href="{{ url_for('clusters') }}">Clusters</a></div>
+          <div class="sub-nav"><a href="{{ url_for('nfts') }}">NFTs</a></div>
+          <div class="sub-nav"><a href="{{ url_for('faqs') }}">FAQs</a></div>
+          <div class="sub-nav"><a href="{{ url_for('downloads') }}">Downloads</a></div>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer id="footer">
+      {% block footer %}
+      <div class="ftr">
+        <div class="ftr-flex">
+          <div class="ftr-info">Donations Appreciated!</div>
+          <div class="ftr-info">Theta: 0x774C774cd68E63171e688d9FBAfA2e1E6aa379Bd</div>
+        </div>
+        <div class="ftr-icns">
+          <a href="https://github.com/edgestats" target="_blank" rel="noopener noreferrer">
+            <img src="{{ url_for('static', filename='GitHub-Mark-Light-120px-plus.png') }}" alt="GitHub">
+          </a>
+        </div>
+      </div>
+      {% endblock %}
+    </footer>
+
+  </div>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='nav.js') }}"></script>
+
+</body>
+
+</html>

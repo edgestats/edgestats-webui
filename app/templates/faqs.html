@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}NFTs{% endblock %}
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+<article class="faqs-grid">
+
+  <section class="faqs">
+    <div id="faqs">
+      <div class="key">How does it works?</div>
+      <div class="val">EdgeStats client watches edge node log file</div>
+      <div class="val">Scans edge node logs as they are written</div>
+      <div class="val">Filters edge node logs relevant to uptime</div>
+      <div class="val">Sends uptime logs to the EdgeStats server</div>
+      <div class="val">Web UI displays the edge node uptime stats</div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div id="notes">
+      <div class="key">Important to note!</div>
+      <div class="val">An edge node's uptime stats will not be available unless the EdgeStats client was run previously
+      </div>
+      <div class="val">If an edge node is running but the EdgeStats client is not, the uptime stats are not being
+        collected by EdgeStats</div>
+      <div class="val">If either the EdgeStats client or edge node is not running, uptime stats are not being collected
+        by EdgeStats</div>
+    </div>
+  </section>
+
+
+</article>
+{% endblock %}
