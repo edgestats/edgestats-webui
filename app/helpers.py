@@ -11,8 +11,12 @@ def get_account_stats(addr):
     headers = {"x-api-key": os.getenv("EDGESTATS_API_KEY")}
     req = requests.request("GET", uri, json={}, headers=headers)
     account = req.json()
-    account["body"]["balance"]["theta"] = '{0:.4f}'.format(int(account["body"]["balance"]["thetawei"])/10**18)
-    account["body"]["balance"]["tfuel"] = '{0:.4f}'.format(int(account["body"]["balance"]["tfuelwei"])/10**18)
+
+    try:
+        account["body"]["balance"]["theta"] = '{0:.4f}'.format(int(account["body"]["balance"]["thetawei"])/10**18)
+        account["body"]["balance"]["tfuel"] = '{0:.4f}'.format(int(account["body"]["balance"]["tfuelwei"])/10**18)
+    except Exception:
+        account["body"] = {"balance": {"theta": '{0:.4f}'.format(0.000), "tfuel": '{0:.4f}'.format(0.000)}}
 
     return account
 
@@ -25,20 +29,23 @@ def get_node_stake_by_acc(addr):
     txs = req.json()
 
     # note add and sub order not important
-    node_stake_by_acc = {} 
-    for tx in txs["body"]:
-        # add type=10
-        if tx["type"] == 10:
-            try:
-                node_stake_by_acc[tx["data"]["source"]["address"]] += int(int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
-            except KeyError:
-                node_stake_by_acc[tx["data"]["source"]["address"]] = int(+int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
-        # sub type=11
-        elif tx["type"] == 11:
-            try:
-                node_stake_by_acc[tx["data"]["source"]["address"]] -= int(int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
-            except KeyError:
-                node_stake_by_acc[tx["data"]["source"]["address"]] = int(-int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
+    node_stake_by_acc = {}
+    try:
+        for tx in txs["body"]:
+            # add type=10
+            if tx["type"] == 10:
+                try:
+                    node_stake_by_acc[tx["data"]["source"]["address"]] += int(int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
+                except KeyError:
+                    node_stake_by_acc[tx["data"]["source"]["address"]] = int(+int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
+            # sub type=11
+            elif tx["type"] == 11:
+                try:
+                    node_stake_by_acc[tx["data"]["source"]["address"]] -= int(int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
+                except KeyError:
+                    node_stake_by_acc[tx["data"]["source"]["address"]] = int(-int(tx["data"]["source"]["coins"]["tfuelwei"])/10**18)
+    except Exception:
+        pass
 
     return node_stake_by_acc
 

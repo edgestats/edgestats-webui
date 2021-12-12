@@ -58,10 +58,16 @@ def stats():
     refreshed_at = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
     # get node account stats
-    account = get_account_stats(addr=addr)
+    try:
+        account = get_account_stats(addr=addr)
+    except Exception:
+        abort(404, "node address not found")
 
     # get node stakes by account
-    stakes = get_node_stake_by_acc(addr=addr)
+    try:
+        stakes = get_node_stake_by_acc(addr=addr)
+    except Exception:
+        abort(404, "node address not found")
 
     return render_template(
         "stats.html",

@@ -85,6 +85,7 @@
   </section>
 
   <section class="stakes-stats">
+    {% if stakes %}
     <div id="stakes">
       <div class="key">TFuel Stakes</div>
       <table class="tbl">
@@ -106,6 +107,7 @@
         </tbody>
       </table>
     </div>
+    {% endif %}
   </section>
 
   {% if aggregates['misses']['30day'] != 0 %}
